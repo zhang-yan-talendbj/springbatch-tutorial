@@ -43,7 +43,7 @@
     	<property name="mappingLocation" value="classpath:/xml/sample-mapping.xml" />
 	</bean>
 	<bean id="outputResource" class="org.springframework.core.io.FileSystemResource">
-		<constructor-arg value="C:/Project/article-on-web/com.alaincieslik.springbatch/target/test-outputs/output.xml" />
+		<constructor-arg value="c:/temp/xml/output.xml" />
 	</bean>
 	<bean id="xmlstreaming.skipListener" class="com.alaincieslik.springbatch.article.xmlstreaming.batch.SampleSkipListener" scope="step">
 		<property name="skipItemsDao" ref="xmlstreaming.skipItemsDao"/>

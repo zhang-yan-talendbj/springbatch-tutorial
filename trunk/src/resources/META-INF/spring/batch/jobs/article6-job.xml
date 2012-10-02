@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/batch 
+		http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+
+	<batch:job 	id="tutorial6.xmlstreaming.sampleJob"  
+				restartable="false" 
+				incrementer="executionflow.jobIncrementer">
+		<batch:step id="processing">
+			<batch:tasklet>
+				<batch:chunk reader="xmlstreaming.sampleStaxReader" 
+							 processor="xmlstreaming.sampleProcessor" 
+							 writer="xmlstreaming.sampleStaxWriter" 
+							 commit-interval="50" 
+							 skip-policy="xmlstreaming.sampleSkipPolicy"/>
+				<batch:listeners>
+					<batch:listener ref="xmlstreaming.skipListener"/>
+					<batch:listener ref="xmlstreaming.stepListener"/>
+				</batch:listeners>
+			</batch:tasklet>
+		</batch:step>
+	</batch:job>
+
+ 	<bean id="xmlstreaming.sampleStaxReader" class="org.springframework.batch.item.xml.StaxEventItemReader">
+	    <property name="fragmentRootElementName" value="item" />
+	    <property name="resource" value="classpath:/xml/items.xml" />
+	    <property name="unmarshaller" ref="xmlstreaming.itemCastorMarshaller" />
+	</bean>
+	<bean id="xmlstreaming.sampleStaxWriter" class="org.springframework.batch.item.xml.StaxEventItemWriter">
+		<property name="resource" ref="outputResource" />
+		<property name="marshaller" ref="xmlstreaming.sampleCastorMarshaller" />
+		<property name="rootTagName" value="items" />
+		<property name="overwriteOutput" value="true" />
+	</bean>	
+	<bean id="xmlstreaming.itemCastorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller">
+    	<property name="mappingLocation" value="classpath:/xml/item-mapping.xml" />
+	</bean>
+	<bean id="xmlstreaming.sampleCastorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller">
+    	<property name="mappingLocation" value="classpath:/xml/sample-mapping.xml" />
+	</bean>
+	<bean id="outputResource" class="org.springframework.core.io.FileSystemResource">
+		<constructor-arg value="C:/Project/article-on-web/com.alaincieslik.springbatch/target/test-outputs/output.xml" />
+	</bean>
+	<bean id="xmlstreaming.skipListener" class="com.alaincieslik.springbatch.article.xmlstreaming.batch.SampleSkipListener" scope="step">
+		<property name="skipItemsDao" ref="xmlstreaming.skipItemsDao"/>
+		<property name="jobExecutionId" value="#{stepExecutionContext['jobExecutionId']}" />
+		<property name="stepExecutionId" value="#{stepExecutionContext['stepExecutionId']}" />
+		<property name="jobName" value="#{stepExecutionContext['jobName']}" />
+	</bean>
+ 
+</beans>
+  

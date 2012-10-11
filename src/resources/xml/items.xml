@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<items>
-	<item data="value1" type="1"/>
-	<item data="value2" type="2"/>
-	<item data="value3" type="3"/>
-	<item data="value4" type="4"/>
+<items xmlns="http://alain-cieslik.com/xmlstreaming">
+	<item><data>value1</data><type>1</type><types>1</types></item>
+	<item><data>value2</data><type>2</type></item>
+	<item><data>value3</data><type>3</type></item>
+	<item><data>value4</data><type>4</type></item>
 </items>

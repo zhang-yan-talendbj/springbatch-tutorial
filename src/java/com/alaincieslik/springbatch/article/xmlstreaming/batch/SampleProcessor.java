@@ -16,9 +16,6 @@ public class SampleProcessor implements ItemProcessor<Item, Sample>{
 		exemple.setId(i++);
 		exemple.setData(value.getData());
 		exemple.setType(value.getType());
-		if(i==3){
-			throw new SampleSkipException();
-		}
 		return exemple;
 	}
 

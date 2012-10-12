@@ -1,17 +1,19 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     targetNamespace="http://alain-cieslik.com/xmlstreaming"
-    xmlns:tns="http://alain-cieslik.com/xmlstreaming"
+    xmlns="http://alain-cieslik.com/xmlstreaming"
     attributeFormDefault="unqualified"
-    elementFormDefault="qualified"
-    version="1.0">
+    elementFormDefault="qualified" >
 
-   <xsd:element name="items" type="tns:Items"/>
+   <xsd:element name="items" type="Items"/>
    
-   <xsd:element name="item" type="tns:Item"/>
+   <xsd:element name="item" type="Item"/>
 
    <xsd:complexType name="Items">
       <xsd:sequence>
-         <xsd:element name="item" type="tns:Item" minOccurs="0" maxOccurs="unbounded"/>
+         <xsd:element name="item" 
+         			  type="Item" 
+         			  minOccurs="0" 
+         			  maxOccurs="unbounded"/>
       </xsd:sequence>
    </xsd:complexType>
 

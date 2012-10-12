@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,6 +19,10 @@ import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.xml.sax.ErrorHandler;
@@ -25,19 +30,32 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 @Service("validationTasket")
-public class ValidationTasklet implements Tasklet{
+public class ValidationTasklet implements Tasklet, ApplicationContextAware{
 
+	private Resource xmlFile;
+	private Resource xsdFile;
+	
+	public void setApplicationContext(ApplicationContext context) throws BeansException {
+	    xmlFile=context.getResource("classpath:xml/items.xml");
+	    xsdFile=context.getResource("classpath:xml/items.xsd");
+	}
+	
 	public RepeatStatus execute(StepContribution contribution,
 			ChunkContext chunkContext) throws Exception {
 		
-	    DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-	    Document document = parser.parse(new File("C:/Project/article-on-web/com.alaincieslik.springbatch/src/resources/xml/items.xml"));
+		DocumentBuilderFactory dbf=DocumentBuilderFactory.newInstance(); 
+		dbf.setNamespaceAware(true);  
+		
+	    DocumentBuilder parser = dbf.newDocumentBuilder();
+	    //Document document = parser.parse(new File("C:/Project/article-on-web/com.alaincieslik.springbatch/src/resources/xml/items.xml"));
+	    Document document = parser.parse(xmlFile.getInputStream());
 
 	    // create a SchemaFactory capable of understanding WXS schemas
 	    SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
 	    // load a WXS schema, represented by a Schema instance
-	    Source schemaFile = new StreamSource(new File("C:/Project/article-on-web/com.alaincieslik.springbatch/src/resources/xml/items.xsd"));
+	    //Source schemaFile = new StreamSource(new File("C:/Project/article-on-web/com.alaincieslik.springbatch/src/resources/xml/items.xsd"));
+	    Source schemaFile = new StreamSource(xsdFile.getInputStream());
 	    Schema schema = factory.newSchema(schemaFile);
 
 	    // create a Validator instance, which can be used to validate an instance document
@@ -50,7 +68,9 @@ public class ValidationTasklet implements Tasklet{
 	    	e.printStackTrace();
 	    }
     	MyErrorHandler myErrorHandler= (MyErrorHandler)validator.getErrorHandler();
-    	System.out.println(myErrorHandler.toString());
+    	if(myErrorHandler.checkErrors()){
+    		throw new RuntimeException("xml is not valid ! ");
+    	}
 
  		return RepeatStatus.FINISHED;
 	}
@@ -71,7 +91,13 @@ public class ValidationTasklet implements Tasklet{
 		public void fatalError(SAXParseException exception) throws SAXException {
 			fatalErrors.add(exception);
 		}
-    	
+    	public boolean checkErrors(){
+    		if(errors.size()>0||fatalErrors.size()>0){
+    			return true;
+    		}else{
+    			return false;
+    		}
+    	}
 		public String toString(){
 			return "Warnings="+warnings.size()+"\n"+"Errors="+errors.size()+"\n"+"Fatal Errors="+fatalErrors.size()+"\n";
 		}

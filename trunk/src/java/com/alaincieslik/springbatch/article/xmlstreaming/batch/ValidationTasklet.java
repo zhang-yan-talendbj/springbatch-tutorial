@@ -47,14 +47,12 @@ public class ValidationTasklet implements Tasklet, ApplicationContextAware{
 		dbf.setNamespaceAware(true);  
 		
 	    DocumentBuilder parser = dbf.newDocumentBuilder();
-	    //Document document = parser.parse(new File("C:/Project/article-on-web/com.alaincieslik.springbatch/src/resources/xml/items.xml"));
 	    Document document = parser.parse(xmlFile.getInputStream());
 
 	    // create a SchemaFactory capable of understanding WXS schemas
 	    SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
 	    // load a WXS schema, represented by a Schema instance
-	    //Source schemaFile = new StreamSource(new File("C:/Project/article-on-web/com.alaincieslik.springbatch/src/resources/xml/items.xsd"));
 	    Source schemaFile = new StreamSource(xsdFile.getInputStream());
 	    Schema schema = factory.newSchema(schemaFile);
 
@@ -65,7 +63,7 @@ public class ValidationTasklet implements Tasklet, ApplicationContextAware{
 	    try {
 	        validator.validate(new DOMSource(document));
 	    } catch (SAXException e) {
-	    	e.printStackTrace();
+	    	throw new RuntimeException(e);
 	    }
     	MyErrorHandler myErrorHandler= (MyErrorHandler)validator.getErrorHandler();
     	if(myErrorHandler.checkErrors()){
@@ -99,7 +97,9 @@ public class ValidationTasklet implements Tasklet, ApplicationContextAware{
     		}
     	}
 		public String toString(){
-			return "Warnings="+warnings.size()+"\n"+"Errors="+errors.size()+"\n"+"Fatal Errors="+fatalErrors.size()+"\n";
+			return 	"Warnings="+warnings.size()+
+					"\n"+"Errors="+errors.size()+
+					"\n"+"Fatal Errors="+fatalErrors.size()+"\n";
 		}
     }
 }

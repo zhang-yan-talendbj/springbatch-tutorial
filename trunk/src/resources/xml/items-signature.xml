@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><items xmlns="http://alain-cieslik.com/xmlstreaming">
+	<item><data>value1</data><type>1</type></item>
+	<item><data>value2</data><type>2</type></item>
+	<item><data>value3</data><type>3</type></item>
+	<item><data>value4</data><type>4</type></item>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><DigestValue>9wPCf7C3xKrrH7an0abYB2eDPUU=</DigestValue></Reference></SignedInfo><SignatureValue>Pb6wrPaDZPJD+woLyVEAZ2UGMjkzNYOpAbxY5QdBls/aQ6qyqA0ZJA==</SignatureValue><KeyInfo><KeyValue><DSAKeyValue><P>/KaCzo4Syrom78z3EQ5SbbB4sF7ey80etKII864WF64B81uRpH5t9jQTxeEu0ImbzRMqzVDZkVG9
+xD7nN1kuFw==</P><Q>li7dzDacuo67Jg7mtqEm2TRuOMU=</Q><G>Z4Rxsnqc9E7pGknFFH2xqaryRPBaQ01khpMdLRQnG541Awtx/XPaF5Bpsy4pNWMOHCBiNU0Nogps
+QW5QvnlMpA==</G><Y>bOzcrxa+IApk7rP5Ff17GzeSC/kuDyv+Mv72iV+NbH+eBXtMTj1LSkYoLVhhg5QEmyP8bokE9olS
+pAlEaR/74Q==</Y></DSAKeyValue></KeyValue></KeyInfo></Signature></items>

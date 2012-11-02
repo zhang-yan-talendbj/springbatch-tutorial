@@ -12,12 +12,7 @@ import java.util.logging.Logger;
 
 public abstract class BaseComponent {
     protected static Logger logger = Logger.getLogger("batch");   
-    /*
-	protected String keyStoreName="demokeystore";
-	protected String sPass = "spdemo";
-	protected String kPass = "kpdemo";
-	protected String alias = "demo1";
-	*/
+
 	protected String company1="company1_keystore";
 	protected String company2="company2_keystore";
 	protected String storepass="storepass";
@@ -75,6 +70,6 @@ public abstract class BaseComponent {
 	}
 
 	protected String calculeInputPath(){
-		return calculePath()+"xml/input/";
+		return calculePath()+"xml/";
 	}
 }

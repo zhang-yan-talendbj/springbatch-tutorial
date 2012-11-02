@@ -29,18 +29,15 @@
 				</batch:listeners>
 			</batch:tasklet>
 		</batch:step>
-		<batch:step id="xml-signature" next="xml-validation">
+		<batch:step id="xml-signature">
 			<batch:tasklet ref="xmlsignature.xmlSignatureTasket"/>
-		</batch:step>
-		<batch:step id="xml-validation">
-			<batch:tasklet ref="xmlsignature.xmlValidationTasket"/>
 		</batch:step>
 	</batch:job>
 
  	<bean id="xmlsignature.sampleStaxReader" 
  	      class="org.springframework.batch.item.xml.StaxEventItemReader">
 	    <property name="fragmentRootElementName" value="item" />
-	    <property name="resource" value="classpath:/xml/items.xml" />
+	    <property name="resource" value="classpath:/xml/items-signature.xml" />
 	    <property name="unmarshaller" ref="jaxb.reader" />
 	</bean>
     <bean id="jaxb.reader" 

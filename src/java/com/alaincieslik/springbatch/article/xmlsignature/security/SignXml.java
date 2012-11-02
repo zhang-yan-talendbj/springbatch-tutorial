@@ -42,27 +42,31 @@ import org.xml.sax.SAXException;
 
 @SuppressWarnings("restriction")
 public class SignXml extends BaseComponent{
-	private String inputPath="mySample.xml";
-	private String outputPath="mySample-signature.xml";
+	private String _xmlFile="items.xml";
+	private String _signedXmlFile="items-signature.xml";
 
 	public static void main(String[] args) throws Exception {
 		SignXml genEnveloped=new SignXml();
 		genEnveloped.createSignedXml();
 	}
 	
-	public void createSignedXml() throws Exception {
-		XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
+	public void createSignedXml() throws Exception{
 		KeyPair kp = getAlainKeyPair();
+		createSignedXml(kp, calculeInputPath()+_xmlFile, calculeInputPath()+_signedXmlFile);
+	}
+	
+	public void createSignedXml(KeyPair kp, String xmlFile, String signedXmlFile) throws Exception {
+		XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
 		KeyInfo ki = createKeyInfo(fac, kp);
-		Document doc = createDocument();
+		Document doc = createDocument(xmlFile);
 		sign(doc.getDocumentElement(), kp.getPrivate(), fac, ki);
-		createOutputResult(doc, calculeOutputPath()+outputPath);
+		createOutputResult(doc, signedXmlFile);
 	}
 
-	private Document createDocument() throws FileNotFoundException, SAXException, IOException, ParserConfigurationException{
+	private Document createDocument(String xmlFile) throws FileNotFoundException, SAXException, IOException, ParserConfigurationException{
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
-		Document doc = dbf.newDocumentBuilder().parse(new FileInputStream(calculeInputPath()+inputPath));
+		Document doc = dbf.newDocumentBuilder().parse(new FileInputStream(xmlFile));
 		return doc;
 	}
 	

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.XMLConstants;
+import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Source;
@@ -23,6 +24,8 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -34,7 +37,7 @@ public class ValidationTasklet implements Tasklet, ApplicationContextAware{
 	private Resource xsdFile;
 	
 	public void setApplicationContext(ApplicationContext context) throws BeansException {
-	    xmlFile=context.getResource("classpath:xml/items.xml");
+	    xmlFile=context.getResource("classpath:xml/items-signature.xml");
 	    xsdFile=context.getResource("classpath:xml/items.xsd");
 	}
 	
@@ -46,6 +49,14 @@ public class ValidationTasklet implements Tasklet, ApplicationContextAware{
 		
 	    DocumentBuilder parser = dbf.newDocumentBuilder();
 	    Document document = parser.parse(xmlFile.getInputStream());
+	    //Retrieve the signature element
+		NodeList nl = document.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
+		if (nl.getLength() == 0) {
+			throw new Exception("Cannot find Signature element");
+		}
+		Node signatureElement=nl.item(0);
+		//Remove it from the document.
+		signatureElement.getParentNode().removeChild(signatureElement);
 
 	    // create a SchemaFactory capable of understanding WXS schemas
 	    SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);

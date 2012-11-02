@@ -18,30 +18,17 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-/**
- * This is a simple example of validating an XML Signature using the JSR 105
- * API. It assumes the key needed to validate the signature is contained in a
- * KeyValue KeyInfo.
- */
 @SuppressWarnings("restriction")
 public class ValidateXmlSignature extends BaseComponent{
 
 	String fileToValidate = "mySample-signature.xml";
 
-	public ValidateXmlSignature(){
-	}
-	
-	public static void main(String[] args) throws Exception {
-		ValidateXmlSignature validateXmlSignature = new ValidateXmlSignature();
-		validateXmlSignature.validateXmlSignature();
-	}
-
-	private Document loadDocument() throws FileNotFoundException, SAXException,
+	private Document loadDocument(String signedXmlFile) throws FileNotFoundException, SAXException,
 			IOException, ParserConfigurationException {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
 		Document doc = dbf.newDocumentBuilder().parse(
-				new FileInputStream(calculeOutputPath()+fileToValidate));
+				new FileInputStream(signedXmlFile));
 		return doc;
 	}
 
@@ -53,12 +40,16 @@ public class ValidateXmlSignature extends BaseComponent{
 		}
 		return nl.item(0);
 	}
-
+	
 	public void validateXmlSignature() throws Exception {
+		validateXmlSignature(calculeInputPath()+fileToValidate);
+	}
+	
+	public void validateXmlSignature(String signedXmlFile) throws Exception {
 		PublicKey publicKey = null;
 		DOMValidateContext valContext = null;
 		// Instantiate the document to be validated
-		Document document = loadDocument();
+		Document document = loadDocument(signedXmlFile);
 		// Find Signature element
 		Node signatureNode = getSignatureElement(document);
 		String path=calculeOutputPath();
@@ -90,4 +81,9 @@ public class ValidateXmlSignature extends BaseComponent{
 			logger.info("Signature passed core validation");
 		}
 	}	
+
+	public static void main(String[] args) throws Exception {
+		ValidateXmlSignature validateXmlSignature = new ValidateXmlSignature();
+		validateXmlSignature.validateXmlSignature();
+	}
 }

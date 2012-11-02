@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="http://alain-cieslik.com/xmlstreaming">
+	<sample xmlns="http://alain-cieslik.com/xmlstreaming">
+		<id xmlns="http://alain-cieslik.com/xmlstreaming">0</id>
+		<data xmlns="http://alain-cieslik.com/xmlstreaming">value1</data>
+		<type xmlns="http://alain-cieslik.com/xmlstreaming">1</type>
+	</sample>
+	<sample xmlns="http://alain-cieslik.com/xmlstreaming">
+		<id xmlns="http://alain-cieslik.com/xmlstreaming">1</id>
+		<data xmlns="http://alain-cieslik.com/xmlstreaming">value2</data>
+		<type xmlns="http://alain-cieslik.com/xmlstreaming">2</type>
+	</sample>
+	<sample xmlns="http://alain-cieslik.com/xmlstreaming">
+		<id xmlns="http://alain-cieslik.com/xmlstreaming">2</id>
+		<data xmlns="http://alain-cieslik.com/xmlstreaming">value3</data>
+		<type xmlns="http://alain-cieslik.com/xmlstreaming">3</type>
+	</sample>
+	<sample xmlns="http://alain-cieslik.com/xmlstreaming">
+		<id xmlns="http://alain-cieslik.com/xmlstreaming">3</id>
+		<data xmlns="http://alain-cieslik.com/xmlstreaming">value4</data>
+		<type xmlns="http://alain-cieslik.com/xmlstreaming">4</type>
+	</sample>
+</items>

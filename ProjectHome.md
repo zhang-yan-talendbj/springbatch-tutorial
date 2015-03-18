@@ -1,0 +1,1 @@
+Set a sample that explain how to work with spring batch
